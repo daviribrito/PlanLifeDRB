@@ -1,0 +1,9 @@
+# temporários do servidor local
+*.tmp
+# exportações manuais
+exports/
+# ferramentas
+.impeccable/review/
+.impeccable/mocks/
+.DS_Store
+Thumbs.db

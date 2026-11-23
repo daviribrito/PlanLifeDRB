@@ -1,0 +1,198 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-23T18:00:00Z",
+  "title": "Design System: PlanLife",
+  "extensions": {
+    "colorMeta": {
+      "track-paper": { "role": "neutral", "displayName": "Track Paper", "canonical": "#EEF1F5", "darkValue": "#0D131B", "note": "Under a fixed ambient layer: radial lights of --mode at 22% (top left) and 14% (bottom), plus #6D8BFF at 16% (right); transitions .8s.", "tonalRamp": ["#1E242C", "#353D47", "#525B66", "#737D89", "#98A1AC", "#BCC3CC", "#DCE1E8", "#EEF1F5"] },
+      "sheet": { "role": "neutral", "displayName": "Sheet", "canonical": "#FFFFFF", "darkValue": "#141C26", "note": "Opaque surface for controls, inputs and pressed segments.", "tonalRamp": ["#141C26", "#2B333D", "#4A525C", "#6E7680", "#959CA5", "#BDC2C8", "#E3E6EA", "#FFFFFF"] },
+      "sheet-shade": { "role": "neutral", "displayName": "Sheet Shade", "canonical": "rgb(17 26 37 / .045)", "darkValue": "rgb(255 255 255 / .05)", "note": "Translucent veil so it reads on glass.", "tonalRamp": ["#1C2129", "#343A43", "#535A64", "#767E88", "#9BA2AB", "#C1C6CC", "#E4E8EC", "#F6F8FA"] },
+      "glass": { "role": "neutral", "displayName": "Glass", "canonical": "rgb(255 255 255 / .58)", "darkValue": "rgb(22 31 42 / .55)", "note": "Panels and strip fill, with saturate(1.5) blur(var(--blur)).", "tonalRamp": ["#161F2A", "#2E3742", "#4C5560", "#717A85", "#98A0AA", "#BFC5CC", "#E3E6EA", "#FFFFFF"] },
+      "glass-strong": { "role": "neutral", "displayName": "Glass Strong", "canonical": "rgb(255 255 255 / .72)", "darkValue": "rgb(24 33 45 / .72)", "note": "Island, drawer, sticky week heads.", "tonalRamp": ["#18212D", "#303945", "#4E5763", "#737C88", "#9AA2AC", "#C0C6CD", "#E4E7EB", "#FFFFFF"] },
+      "glass-border": { "role": "neutral", "displayName": "Glass Rim", "canonical": "rgb(255 255 255 / .75)", "darkValue": "rgb(255 255 255 / .09)", "note": "1px light rim around frosted containers.", "tonalRamp": ["#1B1F24", "#33393F", "#51585F", "#747B83", "#9AA0A8", "#BFC5CC", "#DDE2E8", "#FFFFFF"] },
+      "glass-edge": { "role": "neutral", "displayName": "Glass Edge", "canonical": "rgb(17 26 37 / .09)", "darkValue": "rgb(255 255 255 / .08)", "note": "Panel-head dividers, topbar bottom rule, island separators.", "tonalRamp": ["#111A25", "#1F2B3A", "#334255", "#4C5D73", "#6C7D93", "#93A1B3", "#BEC8D4", "#E7ECF2"] },
+      "navy-ink": { "role": "neutral", "displayName": "Navy Ink", "canonical": "#111A25", "darkValue": "#E7ECF2", "tonalRamp": ["#111A25", "#1F2B3A", "#334255", "#4C5D73", "#6C7D93", "#93A1B3", "#BEC8D4", "#E7ECF2"] },
+      "slate-ink": { "role": "neutral", "displayName": "Slate Ink", "canonical": "#364352", "darkValue": "#B9C3CE", "tonalRamp": ["#151B22", "#242E3A", "#364352", "#4F5E70", "#6E7D90", "#93A0B0", "#BAC4D0", "#E2E7ED"] },
+      "graphite-muted": { "role": "neutral", "displayName": "Graphite Muted", "canonical": "#5F6B79", "darkValue": "#8D99A6", "tonalRamp": ["#1A1E23", "#2D333B", "#444C57", "#5F6B79", "#7E8996", "#A0A9B4", "#C4CBD3", "#E7EAEE"] },
+      "rule-line": { "role": "neutral", "displayName": "Rule Line", "canonical": "#DAE0E7", "darkValue": "#253140", "tonalRamp": ["#1D2228", "#363D46", "#555E69", "#78828E", "#9DA6B1", "#BFC8D2", "#DAE0E7", "#F1F4F7"] },
+      "rule-line-strong": { "role": "neutral", "displayName": "Rule Line Strong", "canonical": "#BFC8D2", "darkValue": "#34414F", "tonalRamp": ["#1D2228", "#363D46", "#555E69", "#78828E", "#9DA6B1", "#BFC8D2", "#DAE0E7", "#F1F4F7"] },
+      "mode-default": { "role": "primary", "displayName": "Active Mode Band", "canonical": "#2563EB", "note": "Runtime --mode, set from the active cycle's mode color; #475569 when none. Derived: mode-ink = mix 78% with #000 (light) / 65% with #fff (dark); mode-tint = mix 10% (16% dark) over sheet; focus = mix 70% with #1D4ED8.", "tonalRamp": ["#0B1D47", "#12307A", "#1B46AD", "#2563EB", "#5585F0", "#86A8F5", "#B8CCFA", "#E6EEFD"] },
+      "band-vermilion": { "role": "secondary", "displayName": "Saúde Vermilion", "canonical": "#E0452B", "tonalRamp": ["#43130B", "#721F12", "#A32D19", "#E0452B", "#E8705C", "#EF9C8E", "#F6C7BF", "#FCEDEA"] },
+      "band-blue": { "role": "secondary", "displayName": "Inglês Blue", "canonical": "#2563EB", "tonalRamp": ["#0B1D47", "#12307A", "#1B46AD", "#2563EB", "#5585F0", "#86A8F5", "#B8CCFA", "#E6EEFD"] },
+      "band-violet": { "role": "secondary", "displayName": "Estudos Violet", "canonical": "#7445D8", "tonalRamp": ["#221441", "#3B226F", "#55319F", "#7445D8", "#9170E1", "#AF9BEA", "#CFC4F3", "#EFEBFB"] },
+      "band-green": { "role": "secondary", "displayName": "Finanças Green", "canonical": "#0E9F6E", "tonalRamp": ["#042F21", "#075139", "#0B7650", "#0E9F6E", "#3EB68D", "#73CBAC", "#AADFCC", "#E2F4EE"] },
+      "now-red": { "role": "tertiary", "displayName": "Now Red", "canonical": "#D92D20", "tonalRamp": ["#410D0A", "#6F1711", "#A02118", "#D92D20", "#E35B51", "#EB8A83", "#F3BAB6", "#FBE7E6"] },
+      "ok-green": { "role": "status", "displayName": "Pace Green", "canonical": "#0B8A60", "darkValue": "#34C38F", "tonalRamp": ["#03291C", "#064630", "#086746", "#0B8A60", "#3CA581", "#70BFA4", "#A8D9C8", "#E0F2EC"] },
+      "warn-amber": { "role": "status", "displayName": "Warn Amber", "canonical": "#B26A00", "darkValue": "#E6A23C", "tonalRamp": ["#352000", "#5A3500", "#844F00", "#B26A00", "#C78E3A", "#D8AE70", "#E8CFA8", "#F7EDE0"] },
+      "danger-red": { "role": "status", "displayName": "Danger Red", "canonical": "#C8281C", "darkValue": "#F2645A", "tonalRamp": ["#3C0C08", "#66150F", "#961E15", "#C8281C", "#D65A51", "#E28A84", "#EEBAB6", "#F9E7E6"] }
+    },
+    "bandPalette": {
+      "purpose": "The 11 swatches offered when creating a focus mode; each mode owns one.",
+      "values": ["#E0452B", "#E8833A", "#C99A06", "#0E9F6E", "#0891B2", "#2563EB", "#4F46E5", "#7445D8", "#C026D3", "#DB2777", "#475569"]
+    },
+    "typographyMeta": {
+      "headline": { "displayName": "Headline", "purpose": "Topbar page title (26px); vault and lock headings run 26 to 28px." },
+      "title": { "displayName": "Title", "purpose": "Panel heads, strip head, empty states, goal and mode headings (17 to 18px)." },
+      "numeral": { "displayName": "Numeral", "purpose": "Every quantity: money, durations, dates, counts, the island cycle name. Condensed, tabular, 15 to 22px; TOTP at 28px tracked .12em." },
+      "body": { "displayName": "Body", "purpose": "Running text and controls; suggestion detail max 68ch, empty-state copy max 52ch." },
+      "label": { "displayName": "Label", "purpose": "Field labels and chip text; table headers at 12.5px; button and island item text 14px; island tooltips 12.5px." },
+      "scale-mark": { "displayName": "Scale Mark", "purpose": "Strip week/day labels, timeline hours, block times, status pills, chart text, the island's day-of-cycle line." }
+    },
+    "glass": [
+      { "name": "blur", "value": "18px", "purpose": "--blur: panels and strip, with saturate(1.5)." },
+      { "name": "topbar", "value": "saturate(1.5) blur(16px) over ground at 55%", "purpose": "Sticky topbar with a glass-edge bottom rule." },
+      { "name": "island", "value": "saturate(1.8) blur(24px) over glass-strong", "purpose": "Floating navigation island." },
+      { "name": "drawer", "value": "saturate(1.6) blur(28px) over glass-strong", "purpose": "Floating edit sheet; backdrop is rgb(8 12 18 / .22) with blur(3px)." },
+      { "name": "banner", "value": "blur(14px) over status 12% into glass", "purpose": "Read-only and status banners." },
+      { "name": "toast", "value": "blur(16px) over ink 88%", "purpose": "Toasts." },
+      { "name": "week-head", "value": "blur(12px) over glass-strong", "purpose": "Sticky week column heads." }
+    ],
+    "shadows": [
+      { "name": "glass", "value": "0 1px 0 rgb(255 255 255 / .6) inset, 0 1px 2px rgb(17 26 37 / .04), 0 12px 32px -18px rgb(17 26 37 / .22)", "darkValue": "0 1px 0 rgb(255 255 255 / .05) inset, 0 12px 32px -16px rgb(0 0 0 / .55)", "purpose": "Panels and strip at rest." },
+      { "name": "island", "value": "0 1px 0 rgb(255 255 255 / .5) inset, 0 2px 6px rgb(17 26 37 / .08), 0 18px 44px -14px rgb(17 26 37 / .38)", "purpose": "Floating navigation island only." },
+      { "name": "active-pill", "value": "0 1px 0 rgb(255 255 255 / .28) inset, 0 4px 10px -4px rgb(17 26 37 / .35)", "purpose": "Current page's mode pill in the island." },
+      { "name": "lift", "value": "0 1px 2px rgb(17 26 37 / .06), 0 8px 24px -12px rgb(17 26 37 / .18)", "purpose": "Timeline block on hover only." },
+      { "name": "overlay", "value": "0 2px 6px rgb(17 26 37 / .08), 0 24px 60px -20px rgb(17 26 37 / .35)", "purpose": "Drawer and toasts." },
+      { "name": "pressed-segment", "value": "0 1px 2px rgb(0 0 0 / .1)", "purpose": "Selected option in a segmented control." },
+      { "name": "focus-halo", "value": "0 0 0 3px color-mix(in oklab, var(--focus) 22%, transparent)", "purpose": "Input focus, with the border switched to --focus." }
+    ],
+    "motion": [
+      { "name": "ease", "value": "cubic-bezier(.16, 1, .3, 1)", "purpose": "Expo-out for drawer, view entry, toast, island entry, nav pill expansion and strip paint." },
+      { "name": "state", "value": ".15s to .2s", "purpose": "Hover color/border transitions on controls, rows and island items." },
+      { "name": "island-in", "value": "opacity + translate(-50%, 16px), .6s", "purpose": "Island rises into place on load." },
+      { "name": "nav-pill", "value": "label max-width .4s, padding .35s", "purpose": "Active island item expands to reveal its label." },
+      { "name": "tooltip", "value": "opacity .15s, translateY 4px .2s", "purpose": "Island item name above idle items on hover or focus." },
+      { "name": "ambient", "value": "background .8s", "purpose": "Ambient light re-tints when the active cycle changes." },
+      { "name": "drawer", "value": "transform .35s, opacity .25s", "purpose": "Drawer slides in 24px from the right and fades." },
+      { "name": "strip-paint", "value": "clip-path wipe .7s, 12ms stagger per painted cell", "purpose": "First render of the periodization strip; only under prefers-reduced-motion: no-preference." },
+      { "name": "view-in", "value": "opacity + translateY(4px), .4s", "purpose": "Route entry; only when motion allowed." }
+    ],
+    "breakpoints": [
+      { "name": "collapse-splits", "value": "1180px" },
+      { "name": "mobile-island", "value": "860px" }
+    ],
+    "themes": {
+      "default": "light",
+      "dark": "Opt-in via the island theme toggle; persisted as localStorage planlife.theme and applied as :root[data-theme=\"dark\"]. Swaps neutrals, glass tokens and status colors; band hues and structure are unchanged."
+    }
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Navy ink fill for the page's main create action.",
+      "html": "<button class=\"ds-btn ds-btn-primary\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M12 5v14M5 12h14\"/></svg>Nova conta</button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border-radius: var(--r-s, 6px); border: 1px solid var(--line-strong, #BFC8D2); background: var(--surface, #fff); color: var(--ink, #111A25); font: 600 14px/1 'Barlow', ui-sans-serif, system-ui, sans-serif; cursor: pointer; transition: background-color .15s, border-color .15s, transform .1s; } .ds-btn:active { transform: translateY(1px); } .ds-btn:focus-visible { outline: 2px solid var(--focus, #1F57DE); outline-offset: 2px; } .ds-btn-primary { background: var(--ink, #111A25); border-color: var(--ink, #111A25); color: var(--surface, #fff); } .ds-btn-primary:hover { background: var(--ink-2, #364352); border-color: var(--ink-2, #364352); }"
+    },
+    {
+      "name": "Default Button",
+      "kind": "button",
+      "refersTo": "button-default",
+      "description": "Opaque sheet with a strong rule; secondary actions.",
+      "html": "<button class=\"ds-btn-default\">Nova meta</button>",
+      "css": ".ds-btn-default { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border-radius: var(--r-s, 6px); border: 1px solid var(--line-strong, #BFC8D2); background: var(--surface, #fff); color: var(--ink, #111A25); font: 600 14px/1 'Barlow', ui-sans-serif, system-ui, sans-serif; cursor: pointer; transition: border-color .15s, transform .1s; } .ds-btn-default:hover { border-color: var(--ink-2, #364352); } .ds-btn-default:active { transform: translateY(1px); } .ds-btn-default:focus-visible { outline: 2px solid var(--focus, #1F57DE); outline-offset: 2px; }"
+    },
+    {
+      "name": "Mode Button",
+      "kind": "button",
+      "refersTo": "button-mode",
+      "description": "Active band hue; actions tied to the current cycle.",
+      "html": "<button class=\"ds-btn-mode\">Aceitar</button>",
+      "css": ".ds-btn-mode { display: inline-flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; border-radius: var(--r-s, 6px); border: 1px solid var(--mode, #2563EB); background: var(--mode, #2563EB); color: #fff; font: 600 14px/1 'Barlow', ui-sans-serif, system-ui, sans-serif; cursor: pointer; transition: background-color .15s, border-color .15s; } .ds-btn-mode:hover { background: color-mix(in oklab, var(--mode, #2563EB) 78%, #000); border-color: color-mix(in oklab, var(--mode, #2563EB) 78%, #000); } .ds-btn-mode:focus-visible { outline: 2px solid var(--focus, #1F57DE); outline-offset: 2px; }"
+    },
+    {
+      "name": "Text Field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "38px opaque ruled field with label above and focus halo.",
+      "html": "<label class=\"ds-field\"><span class=\"ds-field-label\">Nome da meta</span><input class=\"ds-input\" placeholder=\"Reserva de emergência\"></label>",
+      "css": ".ds-field { display: flex; flex-direction: column; gap: 6px; font-family: 'Barlow', ui-sans-serif, system-ui, sans-serif; } .ds-field-label { font-size: 13px; font-weight: 600; color: var(--ink-2, #364352); } .ds-input { height: 38px; padding: 0 12px; border-radius: var(--r-s, 6px); border: 1px solid var(--line-strong, #BFC8D2); background: var(--surface, #fff); color: var(--ink, #111A25); font: 400 15px 'Barlow', sans-serif; transition: border-color .15s, box-shadow .15s; } .ds-input:hover { border-color: var(--ink-2, #364352); } .ds-input:focus { outline: none; border-color: var(--focus, #1F57DE); box-shadow: 0 0 0 3px color-mix(in oklab, var(--focus, #1F57DE) 22%, transparent); } .ds-input::placeholder { color: var(--muted, #5F6B79); }"
+    },
+    {
+      "name": "Mode Chip",
+      "kind": "chip",
+      "refersTo": "chip",
+      "description": "Band-tinted pill with a near-square swatch; names a mode or account type.",
+      "html": "<span class=\"ds-chip\" style=\"--c:#E0452B\">Saúde Física</span>",
+      "css": ".ds-chip { display: inline-flex; align-items: center; gap: 7px; height: 26px; padding: 0 10px; border-radius: 99px; font: 600 13px/1 'Barlow', sans-serif; background: color-mix(in oklab, var(--c, #2563EB) 12%, #fff); color: color-mix(in oklab, var(--c, #2563EB) 75%, #111A25); white-space: nowrap; } .ds-chip::before { content: ''; width: 8px; height: 8px; border-radius: 2px; background: var(--c, #2563EB); }"
+    },
+    {
+      "name": "Navigation Island",
+      "kind": "nav",
+      "refersTo": "nav-island",
+      "description": "Floating glass island at bottom center: cycle chip with progress ring, icon-only items, the active one expanded into a mode pill with its label, tooltips on idle items.",
+      "html": "<div class=\"ds-island-stage\"><nav class=\"ds-island\" aria-label=\"Navegação principal\"><a class=\"ds-cycle\" href=\"#\"><svg class=\"ds-ring\" viewBox=\"0 0 26 26\" aria-hidden=\"true\"><circle cx=\"13\" cy=\"13\" r=\"10\" fill=\"none\" stroke=\"color-mix(in oklab, #2563EB 22%, transparent)\" stroke-width=\"3.5\"/><circle cx=\"13\" cy=\"13\" r=\"10\" fill=\"none\" stroke=\"#2563EB\" stroke-width=\"3.5\" stroke-linecap=\"round\" stroke-dasharray=\"62.83\" stroke-dashoffset=\"35\" transform=\"rotate(-90 13 13)\"/></svg><span class=\"ds-cycle-text\"><b>Inglês</b><small>dia 12 de 28</small></span></a><span class=\"ds-sep\"></span><a class=\"ds-item\" aria-current=\"page\" href=\"#\" data-label=\"Hoje\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><circle cx=\"12\" cy=\"12\" r=\"8\"/><path d=\"M12 8v4l3 2\"/></svg><span class=\"ds-label\">Hoje</span></a><a class=\"ds-item\" href=\"#\" data-label=\"Rotina\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M4 7h16M4 12h16M4 17h10\"/></svg><span class=\"ds-label\">Rotina</span></a><a class=\"ds-item\" href=\"#\" data-label=\"Ciclos\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><rect x=\"4\" y=\"5\" width=\"16\" height=\"15\" rx=\"2\"/><path d=\"M4 10h16M9 3v4M15 3v4\"/></svg><span class=\"ds-label\">Ciclos</span></a></nav></div>",
+      "css": ".ds-island-stage { padding: 48px 12px 12px; display: flex; justify-content: center; background: radial-gradient(400px 200px at 20% 0%, color-mix(in oklab, #2563EB 22%, transparent), transparent 70%), #EEF1F5; } .ds-island { display: flex; align-items: center; gap: 4px; padding: 6px; border-radius: 20px; background: var(--glass-strong, rgb(255 255 255 / .72)); border: 1px solid var(--glass-border, rgb(255 255 255 / .75)); -webkit-backdrop-filter: saturate(1.8) blur(24px); backdrop-filter: saturate(1.8) blur(24px); box-shadow: 0 1px 0 rgb(255 255 255 / .5) inset, 0 2px 6px rgb(17 26 37 / .08), 0 18px 44px -14px rgb(17 26 37 / .38); font-family: 'Barlow', sans-serif; } .ds-sep { width: 1px; align-self: stretch; margin: 8px 4px; background: var(--glass-edge, rgb(17 26 37 / .09)); } .ds-cycle { display: inline-flex; align-items: center; gap: 10px; height: 44px; padding: 0 14px 0 12px; border-radius: 14px; text-decoration: none; color: var(--ink, #111A25); background: color-mix(in oklab, var(--mode, #2563EB) 10%, transparent); transition: background-color .2s; } .ds-cycle:hover { background: color-mix(in oklab, var(--mode, #2563EB) 16%, transparent); } .ds-ring { width: 26px; height: 26px; flex: none; } .ds-cycle-text { display: flex; flex-direction: column; line-height: 1.1; } .ds-cycle-text b { font: 600 15px/1.1 'Barlow Condensed', sans-serif; } .ds-cycle-text small { font: 500 12px/1.2 'Barlow Condensed', sans-serif; color: var(--muted, #5F6B79); } .ds-item { position: relative; display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 12px; border-radius: 14px; color: var(--ink-2, #364352); text-decoration: none; font-weight: 600; font-size: 14px; transition: background-color .2s, color .2s, padding .35s cubic-bezier(.16, 1, .3, 1); } .ds-item:hover { background: color-mix(in oklab, #111A25 7%, transparent); color: var(--ink, #111A25); } .ds-item:focus-visible { outline: 2px solid var(--focus, #1F57DE); outline-offset: 2px; } .ds-label { max-width: 0; overflow: hidden; white-space: nowrap; opacity: 0; transition: max-width .4s cubic-bezier(.16, 1, .3, 1), opacity .25s; } .ds-item[aria-current='page'] { color: #fff; background: var(--mode, #2563EB); padding: 0 16px 0 14px; box-shadow: 0 1px 0 rgb(255 255 255 / .28) inset, 0 4px 10px -4px rgb(17 26 37 / .35); } .ds-item[aria-current='page'] .ds-label { max-width: 140px; opacity: 1; } .ds-item:not([aria-current='page'])::after { content: attr(data-label); position: absolute; bottom: calc(100% + 10px); left: 50%; transform: translate(-50%, 4px); padding: 5px 9px; border-radius: 8px; background: var(--ink, #111A25); color: var(--surface, #fff); font: 600 12.5px/1 'Barlow', sans-serif; white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity .15s, transform .2s cubic-bezier(.16, 1, .3, 1); } .ds-item:not([aria-current='page']):hover::after, .ds-item:not([aria-current='page']):focus-visible::after { opacity: 1; transform: translate(-50%, 0); }"
+    },
+    {
+      "name": "Panel",
+      "kind": "card",
+      "refersTo": "panel",
+      "description": "Frosted glass sheet with condensed head; totals live as a head sentence.",
+      "html": "<div class=\"ds-panel-stage\"><section class=\"ds-panel\"><div class=\"ds-panel-head\"><h2>R$ 48.200 acompanhados</h2><p>Reserva e poupança R$ 20.000 · investido R$ 28.200</p></div><div class=\"ds-panel-body\">Conteúdo</div></section></div>",
+      "css": ".ds-panel-stage { padding: 16px; background: radial-gradient(360px 220px at 10% 0%, color-mix(in oklab, #2563EB 22%, transparent), transparent 70%), #EEF1F5; } .ds-panel { background: var(--glass, rgb(255 255 255 / .58)); border: 1px solid var(--glass-border, rgb(255 255 255 / .75)); border-radius: 14px; -webkit-backdrop-filter: saturate(1.5) blur(var(--blur, 18px)); backdrop-filter: saturate(1.5) blur(var(--blur, 18px)); box-shadow: var(--glass-shadow, 0 1px 0 rgb(255 255 255 / .6) inset, 0 1px 2px rgb(17 26 37 / .04), 0 12px 32px -18px rgb(17 26 37 / .22)); color: var(--ink, #111A25); font: 400 15px/1.5 'Barlow', sans-serif; font-variant-numeric: tabular-nums; } .ds-panel-head { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 14px 18px; border-bottom: 1px solid var(--glass-edge, rgb(17 26 37 / .09)); } .ds-panel-head h2 { margin: 0; font: 600 18px/1.2 'Barlow Condensed', sans-serif; letter-spacing: .01em; } .ds-panel-head p { margin: 0 0 0 auto; color: var(--muted, #5F6B79); font-size: 13px; } .ds-panel-body { padding: 18px; }"
+    },
+    {
+      "name": "Periodization Strip Row",
+      "kind": "custom",
+      "refersTo": "strip-cell",
+      "description": "Signature: day cells painted by cycle runs, rounded only at true run ends, tag clipped to the run.",
+      "html": "<div class=\"ds-strip\"><span class=\"ds-strip-label\">Semana</span><span class=\"ds-cell\"></span><span class=\"ds-cell ds-run ds-start\" style=\"--c:#2563EB\"><span class=\"ds-tag\" style=\"width:calc(400% - 8px)\">Inglês</span></span><span class=\"ds-cell ds-run\" style=\"--c:#2563EB\"></span><span class=\"ds-cell ds-run\" style=\"--c:#2563EB\"></span><span class=\"ds-cell ds-run ds-end\" style=\"--c:#2563EB\"></span><span class=\"ds-cell\"></span><span class=\"ds-cell\"></span></div>",
+      "css": ".ds-strip { display: grid; grid-template-columns: 64px repeat(7, minmax(28px, 1fr)); align-items: center; } .ds-strip-label { font: 600 12.5px/22px 'Barlow Condensed', sans-serif; color: var(--ink-2, #364352); letter-spacing: .02em; } .ds-cell { height: 22px; position: relative; background: var(--surface-2, rgb(17 26 37 / .045)); border-left: 1px solid transparent; background-clip: padding-box; } .ds-run { background: var(--c); } .ds-start { border-radius: 4px 0 0 4px; margin-left: 1px; } .ds-end { border-radius: 0 4px 4px 0; margin-right: 1px; } .ds-tag { position: absolute; left: 6px; top: 0; font: 600 12px/22px 'Barlow Condensed', sans-serif; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; z-index: 1; text-shadow: 0 1px 1px rgb(0 0 0 / .18); }"
+    },
+    {
+      "name": "Timeline Block States",
+      "kind": "custom",
+      "refersTo": "timeline-block",
+      "description": "State by line form: dashed pending, solid done, struck skipped; height equals duration.",
+      "html": "<div class=\"ds-tl\"><div class=\"ds-blk\" style=\"height:44px\"><b>Inglês: leitura</b><small>07:00–07:40 · 40 min</small></div><div class=\"ds-blk ds-done\" style=\"height:30px;--c:#E0452B\"><b>Treino</b></div><div class=\"ds-blk ds-skip\" style=\"height:30px\"><b>Revisão</b></div></div>",
+      "css": ".ds-tl { display: flex; flex-direction: column; gap: 6px; width: 260px; font-family: 'Barlow', sans-serif; } .ds-blk { display: flex; flex-direction: column; gap: 1px; padding: 6px 10px; border-radius: 6px; background: color-mix(in oklab, var(--surface, #fff) 82%, transparent); border: 1px dashed var(--line-strong, #BFC8D2); cursor: pointer; transition: box-shadow .15s; } .ds-blk:hover { box-shadow: 0 1px 2px rgb(17 26 37 / .06), 0 8px 24px -12px rgb(17 26 37 / .18); } .ds-blk b { font-size: 14px; font-weight: 600; line-height: 1.2; } .ds-blk small { font: 500 12.5px/1.2 'Barlow Condensed', sans-serif; color: var(--muted, #5F6B79); } .ds-done { border-style: solid; background: color-mix(in oklab, var(--c, #364352) 16%, #fff); border-color: color-mix(in oklab, var(--c, #364352) 60%, transparent); } .ds-skip { opacity: .55; border-style: solid; border-color: var(--line, #DAE0E7); background: var(--surface-2, rgb(17 26 37 / .045)); } .ds-skip b { text-decoration: line-through; text-decoration-thickness: 1.5px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Periodization Sheet",
+    "overview": "PlanLife is drawn as a coach's training plan for one person's season. The ground is cool track paper, the ink is navy, and every focus cycle (Saúde, Inglês, Estudos, Finanças) owns one saturated band hue that paints its run of days. A day is a column of real time: a block's height is its exact duration, free time still ahead is hatched, and the current moment is a red line. The look is an operations sheet built for a desk at daytime, so it is dense, ruled and quiet. Color shows up as data and never as decoration.\n\nThe world comes from training charts, not SaaS dashboards. Panels are frosted sheets with hairline rules, laid over the paper ground. The glass is moderate: a soft blur over an ambient light, enough to give the sheets depth without hiding the ruling. Headings and numbers are set in a condensed face with tabular figures, the way a printed schedule would be. The shell takes on the season in two places. A faint light behind the glass is tinted by the active cycle's hue, and a floating glass island at the bottom center of the screen carries the navigation, with the current page shown as a pill in that hue.\n\nLight is the default theme. Dark is opt-in from the island's theme toggle and swaps the neutrals and glass tints while keeping the band hues and the structure.",
+    "keyCharacteristics": [
+      "Cool track-paper ground under an ambient light tinted by `--mode`, frosted ruled sheets, navy ink.",
+      "One saturated band hue per focus mode; the active one (`--mode`) colors the ambient light, the active island pill, the cycle ring, primary-mode actions, selection and focus.",
+      "Navigation is a single floating glass island at bottom center; nothing sits in a side column.",
+      "State is shown by line form, not hue: dashed means pending, solid means done, struck through means skipped.",
+      "Duration-proportional geometry: block length equals real time, on both the day timeline and the six-week strip.",
+      "Barlow for UI text, Barlow Condensed for headings, numerals and scale marks, with tabular figures everywhere.",
+      "Moderate glass on containers and chrome only; controls, inputs and data bands stay opaque."
+    ],
+    "rules": [
+      { "name": "The Band Is the Data Rule", "body": "A saturated hue appears only where it encodes a focus mode, an account type or a status. Chrome stays glass, paper and ink; the active cycle reaches the chrome only through the ambient light and the active island pill.", "section": "colors" },
+      { "name": "The Island Carries the Season Rule", "body": "The island is glass, never filled with a band hue. The active cycle shows in it as the solid `--mode` pill on the current page and as the cycle ring, so the island reads as frosted chrome holding one colored mark.", "section": "colors" },
+      { "name": "The Now Is Red Rule", "body": "Now Red marks the present moment and nothing else; errors use Danger.", "section": "colors" },
+      { "name": "The Condensed Figures Rule", "body": "Every number a user reads as a quantity, whether a date, time, duration, amount or count, is set in Barlow Condensed with tabular figures.", "section": "typography" },
+      { "name": "The Guide Line Rule", "body": "A page title is followed by a muted 13.5px guide line that names the span in view (date, ISO week, cycle, day N of M), never by a label above the title.", "section": "typography" },
+      { "name": "The Real Duration Rule", "body": "Wherever time is drawn, length is proportional to time: timeline blocks run at about 1.05px per minute with a 26px floor, strip days are equal fractions of six weeks, and finance account runs flex-grow by their share of the total.", "section": "layout" },
+      { "name": "The Frosted Sheet Rule", "body": "At rest a container is a frosted sheet: glass fill, 1px light rim, 18px blur and the glass shadow, nothing more. Extra shadows respond to hover or overlay and never decorate.", "section": "elevation" },
+      { "name": "The Moderate Glass Rule", "body": "Blur belongs to containers and chrome (panels, strip, topbar, island, drawer, banners, toasts, sticky heads). Buttons, inputs, toggles and data bands stay opaque, so text and runs never sit directly on a moving blur.", "section": "elevation" },
+      { "name": "The Run Rule", "body": "A span of time or a share of a whole is drawn as a horizontal run. Its ends are rounded only where the span really starts or ends, and labels inside are clipped to the run's width with an ellipsis.", "section": "shapes" }
+    ],
+    "dos": [
+      "Do color a surface with a band hue only when it represents a focus mode, account type or status (The Band Is the Data Rule).",
+      "Do draw time and shares as horizontal runs whose length is proportional to the real quantity, with labels clipped to the run.",
+      "Do show block state by line form: dashed for pending, solid for done, struck for skipped.",
+      "Do set dates, times, durations and money in Barlow Condensed 600 with tabular figures.",
+      "Do keep light as the default theme and make dark a token swap under `[data-theme=\"dark\"]`, including the glass tokens.",
+      "Do reserve Now Red (`#D92D20`) for the present moment.",
+      "Do put any new entity editor in the floating drawer.",
+      "Do build new containers from the glass tokens (`--glass`, `--glass-border`, `--glass-shadow`, `--blur`) at 14px radius, and keep controls inside them opaque.",
+      "Do add new top-level destinations as icon-only island items with a tooltip label; keep the bottom padding of the view clear of the island."
+    ],
+    "donts": [
+      "Don't add hero metrics or big-number cards; a total belongs in a panel-head sentence followed by its runs.",
+      "Don't mark list items with colored side stripes; use a horizontal run or a near-square swatch.",
+      "Don't stack extra shadows on sheets at rest beyond the glass shadow.",
+      "Don't fill the island with a band hue; only the active item's pill is solid mode.",
+      "Don't reintroduce a side rail or a second navigation bar; navigation lives in the island.",
+      "Don't put blur behind buttons, inputs or data bands.",
+      "Don't hatch free time that is already past.",
+      "Don't put a small label above page or panel titles; context goes in the guide line below the title."
+    ]
+  }
+}

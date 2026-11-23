@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>PlanLife</title>
+  <meta name="description" content="Gestão de vida: rotina, ciclos de foco, agenda, finanças e cofre de senhas.">
+  <meta name="theme-color" content="#EEF1F5">
+  <link rel="icon" href="assets/img/icon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/app.css">
+  <script>
+    var t = 'light'; try { if (localStorage.getItem('planlife.theme') === 'dark') t = 'dark'; } catch (e) {}
+    document.documentElement.dataset.theme = t;
+  </script>
+</head>
+<body>
+  <div class="app">
+    <div class="main">
+      <header class="topbar" id="topbar"></header>
+      <main class="view" id="view" tabindex="-1"></main>
+    </div>
+    <nav class="dock" id="dock" aria-label="Navegação principal">
+      <a class="dock-brand" href="#/hoje" aria-label="PlanLife, ir para Hoje">
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="2" y="20" width="6" height="10" rx="1.5" fill="currentColor" opacity=".35"/>
+          <rect x="10" y="13" width="6" height="17" rx="1.5" fill="currentColor" opacity=".6"/>
+          <rect x="18" y="6" width="6" height="24" rx="1.5" fill="var(--mode)"/>
+          <rect x="26" y="16" width="4" height="14" rx="1.5" fill="currentColor" opacity=".35"/>
+        </svg>
+      </a>
+      <span id="dock-cycle"></span>
+      <span class="dock-sep" aria-hidden="true"></span>
+      <div class="nav" id="nav"></div>
+      <span class="dock-sep" aria-hidden="true"></span>
+      <span id="dock-tools" style="display:contents"></span>
+    </nav>
+  </div>
+  <script type="module" src="assets/js/app.js"></script>
+</body>
+</html>

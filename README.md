@@ -4,6 +4,8 @@ Sistema pessoal de gestão de vida: **rotina principal**, **ciclos de foco** com
 
 Sem build, sem Node, sem banco de dados. Os dados são arquivos JSON na pasta [`data/`](data/), versionados pelo Git.
 
+**Acesse pela web:** https://daviribrito.github.io/PlanLifeDRB/ (login com Chave Mestra + 2FA; veja [Usar na web](#usar-na-web-github-pages-com-login)).
+
 ## Como rodar no PC
 
 Dê dois cliques em **`start.cmd`**. Ele abre `http://localhost:3100` e inicia um servidor local em PowerShell (já vem no Windows) que grava as alterações em `data/`.
@@ -29,11 +31,21 @@ Para parar: `Ctrl+C` na janela do servidor.
 
 > Git não está instalado nesta máquina. Instale o [Git for Windows](https://git-scm.com/download/win) ou o [GitHub Desktop](https://desktop.github.com/).
 
-### GitHub Pages (somente leitura)
+### Usar na web (GitHub Pages) com login
 
-Em **Settings → Pages**, escolha *Deploy from a branch*, branch `main`, pasta `/ (root)`. O site publicado mostra seus dados em **modo leitura** (não há servidor para gravar). O cofre pode ser aberto lá também, porque a decifração acontece no navegador.
+O login é a sua **Chave Mestra + código 2FA** (a mesma do cofre). Depois que o cofre existe, **todos** os arquivos de `data/` são gravados cifrados (AES-256-GCM). Sem a chave, quem abrir o repositório ou o site vê só texto embaralhado, então o repositório pode ser público.
 
-**Privacidade:** o Pages publica tudo que está no repositório. Se o repositório for público, rotina, ciclos e finanças ficam visíveis para qualquer pessoa. Só o cofre é cifrado. Recomendado: repositório **privado** (Pages em repositório privado exige plano GitHub Pro/Team).
+Para salvar pela web, o app grava direto no repositório pela API do GitHub: cada alteração vira um commit. Não há banco de dados.
+
+1. No PC, rode `start.cmd` e entre com a Chave Mestra. Os arquivos que ainda estavam em texto puro são cifrados nesse momento.
+2. No GitHub, crie um token em *Settings → Developer settings → Personal access tokens → Fine-grained tokens*: só o repositório `PlanLifeDRB`, permissão **Contents: Read and write**.
+3. No PlanLife, em *Ajustes → Usar e salvar pela web*, cole o token e clique em **Salvar e testar**. O token fica cifrado dentro do cofre.
+4. Faça commit e push da pasta `data/` (agora cifrada) e do código.
+5. Em **Settings → Pages**, escolha *Deploy from a branch*, branch `main`, pasta `/ (root)`. Pages gratuito exige repositório público; com os dados cifrados isso é seguro.
+
+Na web, depois do login, o app lê e grava pela API (sempre a versão mais recente). As chaves de IA também ficam no cofre, então valem em qualquer PC.
+
+Se você editar no PC depois de editar na web, rode `git pull` antes, para não sobrescrever o que foi salvo pela web.
 
 ## Telas
 
@@ -74,6 +86,8 @@ Os eventos são lidos ao vivo e não são gravados nos arquivos. Sugestões acei
 - O arquivo [`data/vault/vault.enc.json`](data/vault/) só tem metadados (algoritmo, salt, IV) e o conteúdo cifrado.
 - **2FA (TOTP)** compatível com Google Authenticator, Microsoft Authenticator, Authy, 1Password.
 - Tranca sozinho após 5 minutos parado. A área de transferência é limpa 20 s depois de copiar uma senha.
+
+A sessão (login) vive só na memória da aba: recarregar a página pede login de novo, e ela encerra após 15 minutos parado.
 
 Limite honesto: num app sem servidor, o segredo do 2FA precisa ficar guardado junto dos dados, cifrado pela Chave Mestra. O 2FA impede que alguém que descubra só a sua Chave Mestra abra o cofre pela interface, mas **a proteção real dos dados é a força da Chave Mestra**. Use uma frase longa. Se esquecê-la, não há recuperação.
 

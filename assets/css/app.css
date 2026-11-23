@@ -412,6 +412,11 @@ tr:hover .table-actions, .table-actions:focus-within { opacity: 1; }
 .totp-live .num { font-size: 28px; font-weight: 600; letter-spacing: .12em; }
 .totp-ring { width: 22px; height: 22px; }
 
+/* Antes do login: sem ilha, sem cabeçalho de página */
+body.is-locked .dock, body.is-locked .topbar { display: none; }
+body.is-locked .view { padding-top: 24px; padding-bottom: 24px; }
+body.is-locked .portal { min-height: calc(100vh - 48px); }
+
 /* ---------- 2.0: grade bento ---------- */
 .bento { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
 .bento > * { min-width: 0; }

@@ -4,11 +4,12 @@ import * as gcal from '../gcal.js';
 import { h, icon, download, dateKey } from '../util.js';
 import { getSettings } from '../planning.js';
 import { field, guard, readOnlyNotice } from '../components.js';
+import { session, isOpen, setGitHub } from '../session.js';
 
 export default async function render(view, ctx) {
   const s = await getSettings();
   const can = store.canWrite();
-  ctx.header({ title: 'Ajustes', line: ['PlanLife 2.0', store.canWrite() ? 'Servidor local · gravando em /data' : 'Somente leitura'] });
+  ctx.header({ title: 'Ajustes', line: ['PlanLife 2.0', { local: 'Servidor local · gravando em data/', github: 'Web · gravando no GitHub', readonly: 'Somente leitura' }[store.getMode()]] });
   view.append(readOnlyNotice() || '');
 
   const saveSettings = (patch, msg = 'Ajustes salvos') => guard(async () => {
@@ -42,18 +43,18 @@ export default async function render(view, ctx) {
   prov.addEventListener('change', syncProv); baseField.style.display = prov.value === 'compatible' ? '' : 'none';
   const test = h('button', { class: 'btn' }, 'Testar conexão');
   test.addEventListener('click', async () => {
-    ai.setKey(prov.value, key.value.trim());
+    await guard(() => ai.setKey(prov.value, key.value.trim()));
     if (can) await saveSettings({ ai: { provider: prov.value, model: model.value.trim(), baseUrl: base.value.trim() } }, null);
     test.classList.add('is-busy');
     await guard(() => ai.testConnection(), 'Conexão funcionando');
     test.classList.remove('is-busy');
   });
   panel.append(h('div', { class: 'settings-grid' },
-    h('div', null, h('h3', null, 'Inteligência artificial'), h('p', null, 'Escolha o provedor. A chave fica só neste navegador e nunca vai para os arquivos do repositório; em outro PC, cole de novo.')),
+    h('div', null, h('h3', null, 'Inteligência artificial'), h('p', null, 'Escolha o provedor. Com a sessão aberta, a chave fica guardada cifrada dentro do cofre e vale em qualquer PC ou na web.')),
     h('div', { class: 'stack' }, field('Provedor', prov), field('Modelo', model, 'Você pode trocar por qualquer modelo disponível na sua conta.'), field('Chave de API', key), baseField,
       h('div', { class: 'row' }, h('button', {
         class: 'btn btn--primary', onclick: async () => {
-          ai.setKey(prov.value, key.value.trim());
+          await guard(() => ai.setKey(prov.value, key.value.trim()));
           if (can) await saveSettings({ ai: { provider: prov.value, model: model.value.trim(), baseUrl: base.value.trim() } });
           else toast('Chave salva neste navegador.');
           ctx.refreshChrome();
@@ -83,13 +84,51 @@ export default async function render(view, ctx) {
         can ? h('button', { class: 'btn btn--primary', onclick: async () => { await saveSettings({ google: { clientId: client.value.trim(), calendarIds: calIds.value.split(',').map((x) => x.trim()).filter(Boolean) } }); ctx.clearEvents(); } }, 'Salvar') : null,
         connected ? h('span', { class: 'status-ok' }, icon('check', 14), 'Conectado nesta sessão') : h('button', { class: 'btn', onclick: async () => { if (await guard(() => gcal.connect(), 'Google Agenda conectada')) ctx.refresh(); } }, 'Conectar')))));
 
+  // ---------- Uso pela web (GitHub) ----------
+  if (isOpen()) {
+    const cur = session.data.integrations?.github || {};
+    const owner = h('input', { class: 'input input--mono', value: cur.owner || 'daviribrito' });
+    const repo = h('input', { class: 'input input--mono', value: cur.repo || 'PlanLifeDRB' });
+    const branch = h('input', { class: 'input input--mono', value: cur.branch || 'main' });
+    const token = h('input', { class: 'input input--mono', type: 'password', autocomplete: 'off', value: cur.token || '', placeholder: 'github_pat_…' });
+    const status = h('span', { class: cur.token ? 'status-ok' : 'status-off' }, cur.token ? [icon('check', 14), 'Configurado'] : 'Não configurado');
+    const testGh = async (cfg) => {
+      const r = await fetch(`https://api.github.com/repos/${encodeURIComponent(cfg.owner)}/${encodeURIComponent(cfg.repo)}`, { headers: { authorization: `Bearer ${cfg.token}`, accept: 'application/vnd.github+json' } });
+      if (r.status === 401) throw new Error('Token inválido.');
+      if (r.status === 404) throw new Error('Repositório não encontrado ou o token não tem acesso a ele.');
+      const j = await r.json();
+      if (!j.permissions?.push) throw new Error('O token só lê o repositório. Dê permissão “Contents: Read and write”.');
+      return j;
+    };
+    const saveGh = h('button', { class: 'btn btn--primary' }, 'Salvar e testar');
+    saveGh.addEventListener('click', async () => {
+      const cfg = { owner: owner.value.trim(), repo: repo.value.trim(), branch: branch.value.trim() || 'main', token: token.value.trim() };
+      if (!cfg.token) { token.focus(); return; }
+      saveGh.classList.add('is-busy');
+      const ok = await guard(async () => {
+        const info = await testGh(cfg);
+        await setGitHub(cfg); // na web, a própria gravação do cofre já vai pela API
+        return info;
+      }, 'GitHub conectado. Na web, cada alteração agora é salva no repositório.');
+      saveGh.classList.remove('is-busy');
+      if (ok) ctx.refresh();
+    });
+    panel.append(h('div', { class: 'settings-grid' },
+      h('div', null, h('h3', null, 'Usar e salvar pela web'), h('p', null, 'No GitHub Pages, o app salva direto no repositório pela API do GitHub: cada alteração vira um commit. O token fica cifrado dentro do cofre.')),
+      h('div', { class: 'stack' },
+        h('div', { class: 'grid-3' }, field('Usuário ou organização', owner), field('Repositório', repo), field('Branch', branch)),
+        field('Token do GitHub', token, 'Crie em GitHub → Settings → Developer settings → Fine-grained tokens, só para este repositório, com permissão “Contents: Read and write”.'),
+        h('div', { class: 'row' }, saveGh, cur.token ? h('button', { class: 'btn btn--ghost', onclick: async () => { if (confirm('Remover o token do GitHub do cofre? Na web o app volta a ser só leitura.') && await guard(() => setGitHub(null), 'Token removido')) ctx.refresh(); } }, 'Remover token') : null, status),
+        h('p', { class: 'note' }, h('b', null, 'Agora: '), { local: 'você está no PC, gravando na pasta data/. Faça commit e push para levar as mudanças para a web.', github: 'você está na web, gravando direto no GitHub.', readonly: 'somente leitura. Salve um token acima para poder editar pela web.' }[store.getMode()]))));
+  }
+
   // ---------- Dados ----------
   panel.append(h('div', { class: 'settings-grid' },
     h('div', null, h('h3', null, 'Dados e migração'), h('p', null, 'Tudo vive em arquivos JSON na pasta data/, um por coleção, com schema e versão. A estrutura está documentada em docs/DATA.md junto com um SQL pronto para migrar.')),
     h('div', { class: 'stack' },
       h('p', { class: 'note' }, h('b', null, 'Fluxo diário: '), 'edite aqui com start.cmd rodando, depois faça commit e push. Em outro PC, git pull e start.cmd. O GitHub Pages mostra a versão publicada em modo leitura.'),
-      h('p', { class: 'note' }, h('b', null, 'Atenção: '), 'se o repositório ou o Pages forem públicos, rotina, ciclos e finanças ficam visíveis para qualquer pessoa. Só o cofre é cifrado. Prefira repositório privado.'),
-      h('div', { class: 'row' }, h('button', { class: 'btn', onclick: async () => { const b = await store.exportBundle(); download(`planlife-export-${dateKey()}.json`, JSON.stringify(b, null, 2)); } }, icon('download', 16), 'Exportar tudo (JSON único)')))));
+      h('p', { class: 'note' }, h('b', null, 'Atenção: '), store.isEncrypted() ? 'todos os arquivos de data/ são cifrados com a sua Chave Mestra. O repositório pode ser público sem expor seus dados; a exportação abaixo gera um arquivo decifrado, guarde-o com cuidado.' : 'crie o cofre para ativar o login e cifrar todos os dados. Até lá, quem abrir o repositório lê os arquivos.'),
+      h('div', { class: 'row' }, h('button', { class: 'btn', onclick: async () => { const b = await store.exportBundle(); download(`planlife-export-${dateKey()}.json`, JSON.stringify(b, null, 2)); } }, icon('download', 16), 'Exportar tudo decifrado (JSON único)')))));
 
   view.append(panel);
 }

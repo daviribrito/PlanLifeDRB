@@ -25,7 +25,7 @@ function Send([System.Net.HttpListenerResponse]$res, [int]$code, [string]$body, 
   $res.ContentType = $type
   $res.Headers['Cache-Control'] = 'no-store'
   $res.ContentLength64 = $bytes.Length
-  $res.OutputStream.Write($bytes, 0, $bytes.Length)
+  if ($script:CurrentMethod -ne 'HEAD') { $res.OutputStream.Write($bytes, 0, $bytes.Length) }
   $res.Close()
 }
 
@@ -57,6 +57,7 @@ try {
     while (-not $task.AsyncWaitHandle.WaitOne(250)) { }
     $ctx = $task.GetAwaiter().GetResult()
     $req = $ctx.Request; $res = $ctx.Response
+    $script:CurrentMethod = $req.HttpMethod
     $path = [System.Uri]::UnescapeDataString($req.Url.AbsolutePath)
     try {
       if ($path -eq '/api/health') {

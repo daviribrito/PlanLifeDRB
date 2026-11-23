@@ -100,7 +100,11 @@ async function renderRail() {
         renderRail();
       },
     }, icon(theme === 'dark' ? 'sun' : 'moon', 19)),
-    h('span', { class: 'dock-status', 'data-mode': store.getMode(), role: 'img', 'aria-label': store.canWrite() ? 'Local, salvando em /data' : 'Somente leitura', title: store.canWrite() ? 'Local · salvando em /data' : 'Somente leitura (GitHub Pages)' }),
+    (() => {
+      const mode = store.getMode();
+      const label = mode === 'local' ? 'Local · salvando na pasta data/' : mode === 'github' ? `Web · salvando no GitHub (${store.githubInfo()?.repo})` : 'Somente leitura';
+      return h('span', { class: 'dock-status', 'data-mode': mode === 'readonly' ? 'readonly' : 'local', role: 'img', 'aria-label': label, title: label });
+    })(),
   );
 }
 
@@ -123,8 +127,21 @@ async function render() {
   const { path, params } = parseHash();
   const route = ROUTES.find((r) => r.path === path) || ROUTES[0];
   teardown?.(); teardown = null;
-  await Promise.all([renderNav(route.path), renderRail()]);
   const view = $('#view');
+
+  // Portão de login: com cofre criado, nada é lido antes da Chave Mestra + 2FA.
+  if (store.needsLogin()) {
+    document.body.classList.add('is-locked');
+    document.documentElement.style.setProperty('--mode', '#2563EB');
+    clear(view); view.classList.remove('is-entering');
+    const { renderLogin } = await import('./views/vault.js');
+    setHeader({ title: 'Entrar', line: [] });
+    await renderLogin(view, { params, header: () => {}, go: (hash) => { location.hash = hash; }, refresh: () => render(), onLeave: (fn) => { teardown = fn; }, first: true, gate: true });
+    return;
+  }
+  document.body.classList.remove('is-locked');
+
+  await Promise.all([renderNav(route.path), renderRail()]);
   const mod = await route.load();
   if (seq !== renderSeq) return;
   clear(view);

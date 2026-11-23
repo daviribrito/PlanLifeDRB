@@ -2,6 +2,7 @@
 // nunca vai para os arquivos do repositório.
 
 import * as store from './store.js';
+import { isOpen, getAIKey, setAIKey } from './session.js';
 import { getSettings, modesById, cyclesOn, dayItems, freeWindows } from './planning.js';
 import { addDays, dateKey, fromKey, fmtDayLong, toHHMM, uid, WEEKDAYS_LONG, isoWeekday, money } from './util.js';
 
@@ -13,8 +14,12 @@ export const PROVIDERS = {
 };
 
 const KEY_PREFIX = 'planlife.ai.key.';
-export const getKey = (provider) => { try { return localStorage.getItem(KEY_PREFIX + provider) || ''; } catch { return ''; } };
-export const setKey = (provider, key) => { try { key ? localStorage.setItem(KEY_PREFIX + provider, key) : localStorage.removeItem(KEY_PREFIX + provider); } catch { } };
+export const getKey = (provider) => { if (getAIKey(provider)) return getAIKey(provider); try { return localStorage.getItem(KEY_PREFIX + provider) || ''; } catch { return ''; } };
+// Com sessão aberta, a chave vai cifrada para o cofre (acompanha você em qualquer PC); sem sessão, fica neste navegador.
+export const setKey = async (provider, key) => {
+  if (isOpen() && store.canWrite()) { await setAIKey(provider, key); try { localStorage.removeItem(KEY_PREFIX + provider); } catch { } return; }
+  try { key ? localStorage.setItem(KEY_PREFIX + provider, key) : localStorage.removeItem(KEY_PREFIX + provider); } catch { }
+};
 
 export async function config() {
   const s = await getSettings();

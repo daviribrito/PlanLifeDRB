@@ -6,25 +6,7 @@ import * as C from '../crypto.js';
 import { h, icon, clear, uid, nowISO, copyText, toast, fmtShort } from '../util.js';
 import { drawer, field, guard } from '../components.js';
 import { parseImport, dupKey } from '../vault-import.js';
-
-const PATH = 'vault/vault.enc';
-const AAD = 'planlife-vault-v1';
-const AUTOLOCK_MS = 5 * 60 * 1000;
-
-// sessão em memória (some ao recarregar a página)
-const session = { key: null, data: null, file: null, timer: null, stage: 'locked' };
-function touch() {
-  clearTimeout(session.timer);
-  session.timer = setTimeout(() => { lock(); toast('Cofre trancado por inatividade.'); if (location.hash.startsWith('#/cofre')) location.reload(); }, AUTOLOCK_MS);
-}
-function lock() { session.key = null; session.data = null; session.stage = 'locked'; clearTimeout(session.timer); }
-
-async function persist() {
-  const { iv, data } = await C.encryptJSON(session.key, session.data, AAD);
-  const file = { ...session.file, cipher: { ...session.file.cipher, iv }, data, updatedAt: nowISO(), entries: session.data.entries.length };
-  await store.save(PATH, file);
-  session.file = file;
-}
+import { session, touch, lock, persist, open as openSession, PATH, AAD } from '../session.js';
 
 let qrLoading = null;
 function loadQr() {
@@ -55,7 +37,7 @@ export default async function render(view, ctx) {
       h('button', { class: 'btn btn--ghost', onclick: () => openGenerator() }, icon('dice', 16), 'Gerador'),
       store.canWrite() ? h('button', { class: 'btn btn--ghost', onclick: () => openImport() }, icon('upload', 16), 'Importar') : null,
       store.canWrite() ? h('button', { class: 'btn', onclick: () => editEntry(null) }, icon('plus', 16), 'Nova senha') : null,
-      h('button', { class: 'btn btn--primary', onclick: () => { lock(); ctx.refresh(); } }, icon('lock', 16), 'Trancar'),
+      h('button', { class: 'btn btn--primary', onclick: () => { lock(); location.reload(); } }, icon('lock', 16), 'Sair'),
     ] : [],
   });
   ctx.onLeave(() => { /* mantém a sessão enquanto o auto-lock não dispara */ });
@@ -66,8 +48,7 @@ export default async function render(view, ctx) {
     return setup(view, ctx);
   }
   if (!session.key) { header(`${file.entries ?? '?'} itens · trancado`); return unlock(view, ctx, file); }
-  header(`${session.data.entries.length} itens · destrancado · tranca sozinho após 5 min parado`);
-  touch();
+  header(`${session.data.entries.length} itens · sessão encerra após 15 min parado`);
   return vaultUI(view, ctx);
 
   /* ---------------- Formulários do cofre ---------------- */
@@ -330,7 +311,7 @@ function portal(view, ctx) {
     h('div', { class: 'portal-glow', 'aria-hidden': 'true' }), rings, col,
     h('footer', { class: 'portal-foot' },
       h('span', null, icon('shield', 14), 'AES-256-GCM · PBKDF2 600 mil iterações · 2FA TOTP'),
-      h('span', null, 'Tranca sozinho após 5 min parado')));
+      h('span', null, 'Todos os dados ficam cifrados · sessão encerra após 15 min parado')));
   view.append(stage);
 
   if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
@@ -432,7 +413,9 @@ function setup(view, ctx) {
             entries: 0, data: ct,
           };
           await store.save(PATH, file);
-          session.key = key; session.data = data; session.file = file; session.stage = 'open';
+          store.markVaultCreated();
+          openSession(key, data, file);
+          await store.encryptPlainFiles();
         }, 'Cofre criado');
         master = '';
         if (ok) ctx.refresh(); else { btn.classList.remove('is-busy'); btn.setLabel('Ativar 2FA e criar cofre'); }
@@ -479,8 +462,8 @@ function unlock(view, ctx, file) {
     const forgot = h('details', { class: 'portal-forgot rise' }, h('summary', null, 'Esqueceu a Chave Mestra?'),
       h('p', null, 'Ela nunca é salva, então não existe recuperação. Sem a Chave Mestra, o conteúdo do cofre não pode ser decifrado.'));
     host.append(vaultMark(),
-      h('h2', { class: 'rise' }, 'Cofre trancado'),
-      h('p', { class: 'portal-sub rise' }, `${!file.entries ? 'Nenhum item guardado ainda' : `${file.entries} ${file.entries === 1 ? 'item protegido' : 'itens protegidos'}`}. Digite sua Chave Mestra e depois o código 2FA.`),
+      h('h2', { class: 'rise' }, ctx.gate ? 'Entrar no PlanLife' : 'Cofre trancado'),
+      h('p', { class: 'portal-sub rise' }, ctx.gate ? 'Seus dados ficam cifrados. Digite a Chave Mestra e depois o código do app autenticador.' : `${!file.entries ? 'Nenhum item guardado ainda' : `${file.entries} ${file.entries === 1 ? 'item protegido' : 'itens protegidos'}`}. Digite sua Chave Mestra e depois o código 2FA.`),
       form, forgot);
     stagger(host);
     pw.focus();
@@ -492,7 +475,9 @@ function unlock(view, ctx, file) {
     const submit = async (ev) => {
       ev?.preventDefault();
       if (await C.verifyTotp(data.twoFactor.secret, code.value)) {
-        session.key = key; session.data = data; session.file = file; session.stage = 'open';
+        openSession(key, data, file);
+        const n = await store.encryptPlainFiles().catch(() => 0);
+        if (n) toast(` arquivos de dados foram cifrados.`, 'ok');
         ctx.refresh();
       } else { code.select(); toast('Código inválido ou expirado.', 'error'); }
     };
@@ -505,4 +490,12 @@ function unlock(view, ctx, file) {
     code.focus();
   };
   stage1();
+}
+
+/** Tela de entrada do app: cria o cofre (primeiro uso) ou pede Chave Mestra + 2FA. */
+export async function renderLogin(view, ctx) {
+  store.invalidate(PATH);
+  const file = await store.load(PATH, null);
+  if (!file) return setup(view, ctx);
+  return unlock(view, ctx, file);
 }
